@@ -1,19 +1,32 @@
 {
-    "name": "ws_task",
+    "name": "battleship",
     "version": "1.0.0",
-    "description": "Template for the WebSocket remote control task",
-    "main": "index.js",
-    "type": "module",
+    "description": "The Battleship game with using Websocket",
+    "main": "index.ts",
     "scripts": {
-        "start": "node ./index.js",
-        "start:dev": "nodemon ./index.js",
+        "start": "tsx src/index.ts",
+        "start:dev": "nodemon src/index.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "Andrei Auchynnikau",
-    "keywords": [],
+    "author": "Dmitriy Korzun",
+    "keywords": [
+        "battleship",
+        "websocket",
+        "typescript"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KuzmakD/battleship.git"
+    },
     "license": "ISC",
+    "homepage": "https://github.com/KuzmakD/battleship.git#readme",
     "devDependencies": {
-        "nodemon": "^2.0.16"
+        "@types/node": "^22.7.9",
+        "@types/ws": "^8.5.12",
+        "nodemon": "^2.0.16",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.19.1",
+        "typescript": "^5.6.3"
     },
     "dependencies": {
         "ws": "^8.8.0"
