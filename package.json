@@ -4,9 +4,12 @@
     "description": "The Battleship game with using Websocket",
     "main": "index.ts",
     "scripts": {
+        "build": "webpack",
+        "start:webpack": "webpack --watch",
+        "lint": "eslint src --max-warnings 0 --fix",
+        "format": "prettier src --write",
         "start": "tsx src/index.ts",
-        "start:dev": "nodemon src/index.ts",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start:dev": "nodemon src/index.ts"
     },
     "author": "Dmitriy Korzun",
     "keywords": [
@@ -21,12 +24,26 @@
     "license": "ISC",
     "homepage": "https://github.com/KuzmakD/battleship.git#readme",
     "devDependencies": {
+        "@tsconfig/node20": "^20.1.4",
         "@types/node": "^22.7.9",
+        "@types/webpack": "^5.28.5",
         "@types/ws": "^8.5.12",
-        "nodemon": "^2.0.16",
+        "@typescript-eslint/eslint-plugin": "^8.11.0",
+        "@typescript-eslint/parser": "^8.11.0",
+        "copy-webpack-plugin": "^12.0.2",
+        "eslint": "^9.13.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-webpack-plugin": "^4.2.0",
+        "nodemon": "^3.1.7",
+        "nodemon-webpack-plugin": "^4.8.2",
+        "prettier": "^3.3.3",
+        "prettier-plugin-organize-imports": "^4.1.0",
+        "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
         "tsx": "^4.19.1",
-        "typescript": "^5.6.3"
+        "typescript": "^5.6.3",
+        "webpack": "^5.95.0",
+        "webpack-cli": "^5.1.4"
     },
     "dependencies": {
         "ws": "^8.8.0"
