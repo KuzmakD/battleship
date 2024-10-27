@@ -1,4 +1,4 @@
-import { webSocketServer } from './web_socket/web-server';
+import { webSocketServer } from './web_socket/server.web-socket';
 import { httpServer } from './http_server/http-server';
 import dotenv from 'dotenv';
 
