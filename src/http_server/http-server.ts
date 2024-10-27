@@ -4,7 +4,7 @@ import * as http from 'node:http';
 
 export const httpServer = http.createServer(function (
   req: http.IncomingMessage,
-  res: http.ServerResponse
+  res: http.ServerResponse,
 ) {
   const __dirname = path.resolve(path.dirname(''));
   const file_path = __dirname + (req.url === '/' ? '/front/index.html' : '/front' + req.url);
