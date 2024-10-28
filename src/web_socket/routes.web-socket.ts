@@ -1,8 +1,17 @@
 import WebSocket from 'ws';
+import { UserController } from '../user/user.controller';
+import { RoomController } from '../room/room.controller';
+import { ConnectionController } from '../connection/connection.controller';
+import { GameController } from '../game/game.controller';
 
 export const webSocketRoutes = async (
-  data: WebSocket.Server,
-  webSocket: WebSocket.Server,
+  data: WebSocket.RawData,
+  webSocket: WebSocket,
+  userController: UserController,
+  roomController: RoomController,
+  connectionController: ConnectionController,
+  gameController: GameController,
+  connectionId: number,
 ) => {
   console.log(`Received message: ${data}`);
   let message = JSON.parse(data.toString());
