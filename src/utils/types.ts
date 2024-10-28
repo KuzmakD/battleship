@@ -1,5 +1,7 @@
+import { ShipTypes } from '../utils/constants';
+
 export interface IUser {
-  id: string;
+  id: number;
   name: string;
   password: string;
   wins: number;
@@ -7,8 +9,9 @@ export interface IUser {
 
 export interface IGame {
   id: number;
-  firstPlayer: IUser;
-  secondPlayer: IUser;
+  users: IUser[];
+  fields: [];
+  turn: number;
 }
 
 export interface IRoom {
@@ -20,10 +23,10 @@ export interface IShip {
   position: {
     x: number;
     y: number;
-    direction: boolean;
-    length: number;
-    type: "small" | "medium" | "large" | "huge";
   }
+  direction: boolean;
+  length: number;
+  type: ShipTypes;
 }
 
 export interface IAttack {
@@ -31,4 +34,9 @@ export interface IAttack {
   x: number;
   y: number;
   indexPlayer: number | string;
+}
+
+export type Coordinates = {
+  x: number;
+  y: number;
 }
