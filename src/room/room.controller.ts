@@ -4,13 +4,11 @@ import { User } from '../user/user.model'
 export class RoomController {
   rooms: Room[] = [];
 
-  getAvailableRooms() {
+  getAvailableRooms(): string {
     const data = this.rooms.map((room) => {
       return {
-        roomId: room .id,
-        roomUsers: room.users.map((user) => {
-          return { name: user.name, index: user.id }
-        })
+        roomId: room.id,
+        roomUsers: room.users.map(({name, id}) => ({ name, index: id })),
       }
     });
     
@@ -21,19 +19,17 @@ export class RoomController {
     });
   }
 
-  createNewRoom(user: User) {
+  createNewRoom(user: User): string {
     const room: Room = new Room();
     
     room.id = this.getLastRoomId(this.rooms) + 1;
     room.users.push(user);
     this.rooms.push(room);
 
-    let data = this.rooms.map((room) => {
+    const data = this.rooms.map(({id, users}) => {
       return {
-        roomId: room.id,
-        roomUsers: room.users.map((user) => {
-          return { name: user.name, index: user.id }
-        })
+        roomId: id,
+        roomUsers: users.map(({name, id}) => ({ name, index: id })),
       }
     });
     
@@ -44,18 +40,40 @@ export class RoomController {
     });
   }
 
-  getRoomIndexByUserId(userId: number) {
+  addUserToRoom(user: User, message: string) {
+    const data = JSON.parse(message);
+    const room = this.rooms.find((room) => room.id === data.indexRoom);
+    
+    if (room) {
+      if (room.users[0].id === user.id || room.users.length === 2) return;
+      
+      const roomIndex = this.getRoomIndexByUserId(user.id);
+      if (roomIndex >= 0) {
+        this.rooms.splice(roomIndex, 1);
+      }
+      room.users.push(user);
+    }
+
+    return this.rooms.map((room) => {
+      return {
+        roomId: room.id,
+        roomUsers: room.users.map(({ name, id }) => {
+          return { name, index: id }
+        })
+      }
+    });
+  }
+
+  getRoomIndexByUserId(userId: number): number {
     return this.rooms.findIndex((room) => 
       room.users.find(({ id }) => id === userId));
   };
 
-  getRoomById(id: number) {
-    return this.rooms.find((room) =>  room.id === id);
+  getRoomById(id: number): Room | undefined {
+    return this.rooms.find((room) => room.id === id);
   };
 
-  getLastRoomId(allRooms: Array<Room>) {
-    let max = -1;
-    max = Math.max(...allRooms.map(({ id }) => id));
-    return max;
+  getLastRoomId(allRooms: Array<Room>): number {
+    return Math.max(-1, ...allRooms.map(({ id }) => +id));
   };
 }

@@ -1,7 +1,7 @@
 import { Field } from '../field/field.model';
 import { type IUser } from '../utils/types';
 
-export class GameModel {
+export class Game {
   id: number;
   users: Array<IUser>;
   fields: Array<Field> = [];

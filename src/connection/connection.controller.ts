@@ -7,11 +7,6 @@ export class ConnectionController {
     return this.connections;
   }
 
-  saveNewConnection(connection: Connection) {
-    this.connections.push(connection);
-    return connection;
-  }
-
   createConnection(connection: Connection): Connection {
     this.connections.push(connection);
     return connection;
@@ -35,9 +30,6 @@ export class ConnectionController {
   }
 
   getLastConnectionId(connections: Array<Connection>): number {
-    let max = -1;
-    console.log('connectionsId = ', connections.map(({ id }) => id));
-    max = Math.max(...connections.map(({ id }) => id));
-    return max;
+    return Math.max(-1, ...connections.map(({ id }) => +id));
   }
 }

@@ -9,76 +9,67 @@ import { GameController } from '../game/game.controller';
 
 dotenv.config();
 
-const WEBSOCKET_PORT = process.env.WEBSOCKET_PORT || 3002;
+const WEBSOCKET_PORT = process.env.WEBSOCKET_PORT || 3000;
 
 export const webSocketServer = async () => {
   const webSockets = new WebSocket.WebSocketServer({port: +WEBSOCKET_PORT});
-  const connectionController = new ConnectionController();
-  const userController: UserController = new UserController();
-  const roomController: RoomController = new RoomController();
-  const gameController: GameController = new GameController();
+  const cc = new ConnectionController();
+  const uc: UserController = new UserController();
+  const rc: RoomController = new RoomController();
+  const gc: GameController = new GameController();
 
-  webSockets.on('connection', async (webSocket: WebSocket) => {
-    const connections: Connection[] = connectionController.getConnections();
-    const lastConnectionId: number = connectionController.getLastConnectionId(connections);
-    const newConnection: Connection = connectionController.saveNewConnection(
-      new Connection(lastConnectionId + 1, webSocket)
+  webSockets.on('connection', async (ws: WebSocket) => {
+    const connections: Connection[] = cc.getConnections();
+    const lastConnectionId: number = cc.getLastConnectionId(connections);
+    const newConnection: Connection = cc.createConnection(
+      new Connection(lastConnectionId + 1, ws)
     );
     const newConnectionId: number = newConnection.id;
 
     console.log(`Start Websocket Server on the http://localhost:${WEBSOCKET_PORT}`);
 
-    webSocket.on('message', async (data: WebSocket.RawData) => {
-      console.log(`Received message: ${data}`);
-      await webSocketRoutes(
-        data,
-        webSocket,
-        userController,
-        roomController,
-        connectionController,
-        gameController,
-        newConnectionId,
-      );
+    ws.on('message', async (data: WebSocket.RawData) => {
+      console.log(`Received message on server: ${data}`);
+      await webSocketRoutes(data, ws, uc, rc, cc, gc, newConnectionId);
     });
 
-    webSocket.on('error', (err) => {
+    ws.on('error', (err) => {
       console.error(`WebSocket error: ${err.message}`);
     });
 
-    webSocket.on('close', async () => {
-      const userId = connectionController.getConnectionById(newConnectionId)?.userId;
+    ws.on('close', async () => {
+      const userId = cc.getConnectionById(newConnectionId)?.userId;
       if (userId) {
-        const gameId = gameController.getGameIndexByUserId(userId);
-        const roomId = roomController.getRoomIndexByUserId(userId);
+        const gameId = gc.getGameIndexByUserId(userId);
+        const roomId = rc.getRoomIndexByUserId(userId);
+        
         if (roomId !== -1) {
-          roomController.rooms.splice(roomId, 1);
-          connectionController.connections.forEach(({ webSocket }) => {
-            webSocket.send(roomController.getAvailableRooms());
+          rc.rooms.splice(roomId, 1);
+          cc.connections.forEach(({ webSocket }) => {
+            webSocket.send(rc.getAvailableRooms());
           });
         }
 
         if (gameId !== -1) {
-          const game = gameController.getGameById(gameId);
+          const game = gc.getGameById(gameId);
           const winner: any = game?.users.find((user: any) => user.index !== userId);
 
           if (winner) {
-            connectionController.getConnectionByUserId(winner.index)?.webSocket.send(JSON.stringify({
+            cc.getConnectionByUserId(winner.index)?.webSocket.send(JSON.stringify({
               type: 'finish',
-              data: JSON.stringify({
-                winPlayer: winner.index
-              }),
+              data: JSON.stringify({ winPlayer: winner.index }),
               id: 0              
             }));
-            await userController.updateUser(winner.index);
+            await uc.updateUser(winner.index);
 
-            connectionController.getConnections().forEach(async (connection) => {
-              connection.webSocket.send(await userController.getWinnersInfo());
+            cc.getConnections().forEach(async (connection) => {
+              connection.webSocket.send(await uc.getWinnersInfo());
             });
           }
-          gameController.allGames.splice(gameId, 1);
+          gc.games.splice(gameId, 1);
         }
       }
-      connectionController.removeConnectionById(newConnectionId);
+      cc.removeConnectionById(newConnectionId);
     })
   });
 }

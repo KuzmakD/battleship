@@ -36,6 +36,7 @@ export class Field {
 
   addRandomShips() {
     const ships = [1, 2, 3, 4];
+
     ships.forEach((countShips) => {
       for (let i = 0; i < countShips; i++) {
         const type: ShipTypes = this.getShipType(countShips);
@@ -56,7 +57,7 @@ export class Field {
             x: coordinates?.y as number
           },
           direction,
-          length,
+          length: lengthShip,
           type,
         });
 
@@ -109,7 +110,7 @@ export class Field {
   }
 
   checkShot(x: number, y: number): string {
-    const ceil = this.ships[y][x];
+    const ceil: number = this.ships[y][x];
 
     if (ceil === 0) {
       this.ships[y][x] = -5;
@@ -122,24 +123,24 @@ export class Field {
 
       const emptyNeedToUpdate = this.getCellsAround([{ x, y }, ...isKilled.needToUpdate.map(i => { return { x: i.y, y: i.x } })]);
       this.needUpdateKilled = [...isKilled.needToUpdate, ...emptyNeedToUpdate];
-      return Attacks[2]
+      return Attacks[2];
     };
     if (ceil > 0 && ceil < 5 && this.checkNearCeils(ceil, x, y)) {
       this.ships[y][x] = ceil * -1;
-      return Attacks[1]
+      return Attacks[1];
     };
     if (ceil > 0 && ceil < 5 && !this.checkNearCeils(ceil, x, y)) {
       this.ships[y][x] = ceil * -1;
-      return Attacks[2]
+      return Attacks[2];
     };
     if (ceil < 0) {
-      return Attacks[3]
+      return Attacks[3];
     };
 
-    return Attacks[0]
+    return Attacks[0];
   }
 
-  IsAlive(): boolean {
+  isAlive(): boolean {
     return Array.isArray(this.ships.find((row: number[]) =>
       row.find((cell: number) => cell > 0))) ?? false;
   }
@@ -206,16 +207,17 @@ export class Field {
   }
 
   randomAttack() {
-    let attackResult = 'wrongAttack';
+    let status = 'wrongAttack';
     let x: number = -1;
     let y: number = -1;
-    while(attackResult === 'wrongAttack') {
+    
+    while(status === 'wrongAttack') {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-      attackResult = this.checkShot(x, y);
+      status = this.checkShot(x, y);
     }
 
-    return {status: attackResult, x: x, y: y};
+    return {status, x, y};
   }
 
   generateRandomNumber(): number {
