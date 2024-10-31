@@ -2,22 +2,27 @@
 > Static http server and base task packages. 
 > By default WebSocket client tries to connect to the 3000 port.
 
-## Installation
+**You should be in [develop branch](https://github.com/wellder00/Websocket_battleship_server/tree/develop).**
+
+## How to install battleship server
 1. Clone/download repo
+```bash
+git clone https://github.com/KuzmakD/battleship.git
+```
 2. `npm install`
 
-## Usage
+## How to run
 **Development**
 
 `npm run start:dev`
 
-* App served @ `http://localhost:8181` with nodemon
+* App served @ `http://localhost:8081` with nodemon
 
 **Production**
 
 `npm run start`
 
-* App served @ `http://localhost:8181` without nodemon
+* App served @ `http://localhost:8081` without nodemon
 
 ---
 

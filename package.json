@@ -1,19 +1,50 @@
 {
-    "name": "ws_task",
+    "name": "battleship",
     "version": "1.0.0",
-    "description": "Template for the WebSocket remote control task",
-    "main": "index.js",
-    "type": "module",
+    "description": "The Battleship game with using Websocket",
+    "main": "index.ts",
     "scripts": {
-        "start": "node ./index.js",
-        "start:dev": "nodemon ./index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "webpack",
+        "start:webpack": "webpack --watch",
+        "lint": "eslint src --max-warnings 0 --fix",
+        "format": "prettier src --write",
+        "start": "tsx src/index.ts",
+        "start:dev": "nodemon src/index.ts"
     },
-    "author": "Andrei Auchynnikau",
-    "keywords": [],
+    "author": "Dmitriy Korzun",
+    "keywords": [
+        "battleship",
+        "websocket",
+        "typescript"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KuzmakD/battleship.git"
+    },
     "license": "ISC",
+    "homepage": "https://github.com/KuzmakD/battleship.git#readme",
     "devDependencies": {
-        "nodemon": "^2.0.16"
+        "@tsconfig/node20": "^20.1.4",
+        "@types/node": "^22.7.9",
+        "@types/webpack": "^5.28.5",
+        "@types/ws": "^8.5.12",
+        "@typescript-eslint/eslint-plugin": "^8.11.0",
+        "@typescript-eslint/parser": "^8.11.0",
+        "copy-webpack-plugin": "^12.0.2",
+        "dotenv": "^16.4.5",
+        "eslint": "^9.13.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-webpack-plugin": "^4.2.0",
+        "nodemon": "^3.1.7",
+        "nodemon-webpack-plugin": "^4.8.2",
+        "prettier": "^3.3.3",
+        "prettier-plugin-organize-imports": "^4.1.0",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.19.1",
+        "typescript": "^5.6.3",
+        "webpack": "^5.95.0",
+        "webpack-cli": "^5.1.4"
     },
     "dependencies": {
         "ws": "^8.8.0"

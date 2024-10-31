@@ -14,3 +14,12 @@ Thumbs.db
 
 # Logs
 npm-debug.log
+
+# environment
+.env
+
+# build
+dist
+
+#test
+coverage
