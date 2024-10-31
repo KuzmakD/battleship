@@ -1,5 +1,3 @@
-import { ShipTypes } from '../utils/constants';
-
 export interface IUser {
   id: number;
   name: string;
@@ -19,15 +17,15 @@ export interface IRoom {
   users: IUser[];
 }
 
-export interface IShip {
+export type Ship = {
   position: {
     x: number;
     y: number;
-  }
+  };
   direction: boolean;
   length: number;
-  type: ShipTypes;
-}
+  type: 'small' | 'medium' | 'large' | 'huge';
+};
 
 export interface IAttack {
   gameId: number | string;
@@ -39,4 +37,4 @@ export interface IAttack {
 export type Coordinates = {
   x: number;
   y: number;
-}
+};

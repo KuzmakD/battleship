@@ -1,12 +1,12 @@
-import { join, dirname } from 'node:path';
 import fs from 'node:fs/promises';
-import { User } from './user.model';
+import { dirname, join } from 'node:path';
 import { ConnectionController } from '../connection/connection.controller';
+import { User } from './user.model';
 
 export class UserController {
   pathToUsersDB: string = join(dirname(__dirname), './db/db.json');
 
-  async getUsers(): Promise<User[]> {       
+  async getUsers(): Promise<User[]> {
     const data = await fs.readFile(this.pathToUsersDB);
     const users: User[] = JSON.parse(data.toString());
     return users;
@@ -20,14 +20,14 @@ export class UserController {
 
   async getWinnersInfo() {
     const users: User[] = await this.getUsers();
-    const data = users.sort(this.sort).map(({name, wins}) => {
+    const data = users.sort(this.sort).map(({ name, wins }) => {
       return { name, wins };
     });
-    
+
     return JSON.stringify({
       type: 'update_winners',
       data: JSON.stringify(data),
-      id: 0
+      id: 0,
     });
   }
 
@@ -37,15 +37,11 @@ export class UserController {
     return user;
   }
 
-  async login(
-    user: User,
-    cc: ConnectionController,
-    connectionId: number,
-  ) {
+  async login(user: User, cc: ConnectionController, connectionId: number) {
     let userId: number;
     let message: string;
     const users: User[] = await this.getUsers();
-    const userDb =  await this.getUserByName(user.name);
+    const userDb = await this.getUserByName(user.name);
 
     if (userDb) {
       userId = userDb.id;
@@ -77,9 +73,9 @@ export class UserController {
       userId = user.id;
       user.wins = 0;
       users.push(user);
-      
+
       message = JSON.stringify({
-        type: "reg",
+        type: 'reg',
         data: JSON.stringify({
           name: user.name,
           index: user.id,
@@ -114,4 +110,3 @@ export class UserController {
     return b.wins - a.wins;
   }
 }
- 
